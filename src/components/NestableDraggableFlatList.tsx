@@ -57,7 +57,10 @@ function NestableDraggableFlatListInner<T>(
       console.log("## nested draggable list measure fail");
     };
     //@ts-ignore
-    containerRef.current.measureLayout(nodeHandle, onSuccess, onFail);
+    // containerRef.current.measureLayout(nodeHandle, onSuccess, onFail);
+    containerRef.current.measure((x, y, width, height, pageX, pageY) => {
+      listVerticalOffset.value = y;
+    });
   });
 
   const onDragBegin: DraggableFlatListProps<T>["onDragBegin"] = useStableCallback(
