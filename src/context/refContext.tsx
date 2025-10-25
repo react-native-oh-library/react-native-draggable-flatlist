@@ -14,6 +14,7 @@ type RefContextValue<T> = {
   containerRef: React.RefObject<Animated.View>;
   flatlistRef: React.RefObject<FlatList<T>> | React.ForwardedRef<FlatList<T>>;
   scrollViewRef: React.RefObject<Animated.ScrollView>;
+  panGestureRef: React.MutableRefObject<any>;
 };
 const RefContext = React.createContext<RefContextValue<any> | undefined>(
   undefined
@@ -69,6 +70,7 @@ function useSetupRefs<T>({
   const flatlistRefInternal = useRef<FlatList<T>>(null);
   const flatlistRef = flatListRefProp || flatlistRefInternal;
   const scrollViewRef = useRef<Animated.ScrollView>(null);
+  const panGestureRef = useRef<any>(null);
 
   // useEffect(() => {
   //   // This is a workaround for the fact that RN does not respect refs passed in
@@ -91,6 +93,7 @@ function useSetupRefs<T>({
       keyToIndexRef,
       propsRef,
       scrollViewRef,
+      panGestureRef,
     }),
     []
   );

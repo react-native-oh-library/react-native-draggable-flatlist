@@ -1,6 +1,17 @@
 {
-  "name": "react-native-draggable-flatlist",
-  "version": "4.0.3",
+  "name": "@react-native-ohos/react-native-draggable-flatlist",
+  "harmony": {
+    "alias": "react-native-draggable-flatlist"
+  },
+  "files": [
+    "src",
+    "lib",
+    "package.json",
+    "babel.config.js",
+    "tsconfig.json",
+    "jest-setup.js"
+  ],
+  "version": "4.0.4-rc.1",
   "description": "A drag-and-drop-enabled FlatList component for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

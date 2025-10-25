@@ -64,6 +64,7 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
     keyToIndexRef,
     propsRef,
     animationConfigRef,
+    panGestureRef,
   } = useRefs<T>();
   const {
     activeCellOffset,
@@ -208,6 +209,7 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
           renderItem={props.renderItem}
           drag={drag}
           extraData={props.extraData}
+          getPanGestureRef={() => panGestureRef.current}
         />
       );
     },
@@ -285,6 +287,20 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
         ? evt.translationX
         : evt.translationY;
       touchTranslate.value = translation;
+      // Debug logs for diagnosing whether onUpdate is firing and values are changing
+      if (__DEV__) {
+        // console.log is supported inside Reanimated worklets in dev mode
+        console.log(
+          "[DFL] pan.onUpdate",
+          "state=", evt.state,
+          "tx=", evt.translationX,
+          "ty=", evt.translationY,
+          "translation=", translation,
+          "activeIndex=", activeIndexAnim.value,
+          "isTouchActive=", isTouchActiveNative.value,
+          "autoScroll=", autoScrollDistance.value
+        );
+      }
     })
     .onEnd((evt) => {
       if (gestureDisabled.value) return;
@@ -325,13 +341,18 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
 
   if (dragHitSlop) panGesture.hitSlop(dragHitSlop);
   if (activationDistanceProp) {
-    const activeOffset = [-activationDistanceProp, activationDistanceProp];
+    const activeOffset: [number, number] = [-activationDistanceProp, activationDistanceProp];
     if (props.horizontal) {
       panGesture.activeOffsetX(activeOffset);
     } else {
       panGesture.activeOffsetY(activeOffset);
     }
   }
+
+  // Expose pan gesture to children via ref so they can call
+  // simultaneousWithExternalGesture(panGestureRef)
+  // @ts-ignore
+  panGestureRef.current = panGesture;
 
   const onScroll = useStableCallback((scrollOffset: number) => {
     props.onScrollOffsetChange?.(scrollOffset);
