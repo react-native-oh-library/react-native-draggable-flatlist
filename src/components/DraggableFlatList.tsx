@@ -339,7 +339,8 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
       runOnJS(onContainerTouchEnd)();
     });
 
-  if (dragHitSlop) panGesture.hitSlop(dragHitSlop);
+  // if (dragHitSlop) panGesture.hitSlop(dragHitSlop);
+
   if (activationDistanceProp) {
     const activeOffset: [number, number] = [-activationDistanceProp, activationDistanceProp];
     if (props.horizontal) {
@@ -408,6 +409,7 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
             data={props.data}
             onViewableItemsChanged={onViewableItemsChanged}
             CellRendererComponent={CellRendererComponent}
+            hitSlop={dragHitSlop ? JSON.parse(JSON.stringify(dragHitSlop)) : undefined}
             ref={flatlistRef}
             onContentSizeChange={onListContentSizeChange}
             scrollEnabled={!activeKey && scrollEnabled}
