@@ -11,7 +11,7 @@
     "tsconfig.json",
     "jest-setup.js"
   ],
-  "version": "4.0.4-rc.2",
+  "version": "4.0.4",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
