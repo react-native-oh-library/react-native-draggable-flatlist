@@ -49,18 +49,30 @@ function NestableDraggableFlatListInner<T>(
 
   const onListContainerLayout = useStableCallback(async ({ containerRef }) => {
     const nodeHandle = findNodeHandle(scrollableRef.current);
+    const containerNodeHandle = findNodeHandle(containerRef.current);
 
-    const onSuccess = (_x: number, y: number) => {
+    const onSuccess = (
+      _x: number,
+      y: number,
+      _width: number,
+      _height: number
+    ) => {
       listVerticalOffset.value = y;
     };
     const onFail = () => {
       console.log("## nested draggable list measure fail");
     };
-    //@ts-ignore
-    // containerRef.current.measureLayout(nodeHandle, onSuccess, onFail);
-    containerRef.current.measure((x, y, width, height, pageX, pageY) => {
-      listVerticalOffset.value = y;
-    });
+    if (containerNodeHandle && nodeHandle) {
+      const { UIManager } = require("react-native");
+      UIManager.measureLayout(
+        containerNodeHandle,
+        nodeHandle,
+        onFail,
+        onSuccess
+      );
+    } else {
+      onFail();
+    }
   });
 
   const onDragBegin: DraggableFlatListProps<T>["onDragBegin"] = useStableCallback(
