@@ -287,20 +287,6 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
         ? evt.translationX
         : evt.translationY;
       touchTranslate.value = translation;
-      // Debug logs for diagnosing whether onUpdate is firing and values are changing
-      if (__DEV__) {
-        // console.log is supported inside Reanimated worklets in dev mode
-        console.log(
-          "[DFL] pan.onUpdate",
-          "state=", evt.state,
-          "tx=", evt.translationX,
-          "ty=", evt.translationY,
-          "translation=", translation,
-          "activeIndex=", activeIndexAnim.value,
-          "isTouchActive=", isTouchActiveNative.value,
-          "autoScroll=", autoScrollDistance.value
-        );
-      }
     })
     .onEnd((evt) => {
       if (gestureDisabled.value) return;
